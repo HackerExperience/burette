@@ -1,1 +1,3 @@
+ExCheck.start()
+
 ExUnit.start()

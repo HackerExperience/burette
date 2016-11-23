@@ -26,7 +26,8 @@ defmodule Arand.Mixfile do
       {:ex_doc, "~> 0.14", only: :dev},
       {:credo, "~> 0.5", only: :dev},
       {:dialyze, "~> 0.2", only: :dev},
-      {:espec, "~> 1.1.2", only: :test}]
+      {:excheck, "~> 0.5", only: :test},
+      {:triq, github: "triqng/triq", only: :test}]
   end
 
   defp package do
