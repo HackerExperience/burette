@@ -1,2 +1,0 @@
-defmodule Arand do
-end
