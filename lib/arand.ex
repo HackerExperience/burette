@@ -1,0 +1,2 @@
+defmodule Arand do
+end
