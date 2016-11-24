@@ -1,9 +1,8 @@
 defmodule Arand.NumberTest do
 
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   use ExCheck
 
-  alias ExCheck.Sample
   alias Arand.Number
 
   describe "digits/1" do
