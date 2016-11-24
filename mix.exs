@@ -1,16 +1,16 @@
-defmodule Arand.Mixfile do
+defmodule Burette.Mixfile do
 
   use Mix.Project
 
   def project do
     [
-      app: :arand,
+      app: :burette,
       version: "0.1.0",
       elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       preferred_cli_env: [espec: :test],
-      name: "Arand",
+      name: "Burette",
       description: "Library to efficiently generate random data for testing",
       package: package(),
       deps: deps()]
@@ -34,6 +34,6 @@ defmodule Arand.Mixfile do
     [
       files: ~w/mix.exs lib README.md/,
       maintainers: ["Charlotte Lorelei Oliveira"],
-      links: %{"Github" => "https://github.com/mememori/arand"}]
+      links: %{"Github" => "https://github.com/mememori/burette"}]
   end
 end

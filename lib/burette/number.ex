@@ -1,4 +1,4 @@
-defmodule Arand.Number do
+defmodule Burette.Number do
   @moduledoc """
   Generator for simple numeric data
   """

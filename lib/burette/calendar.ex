@@ -1,12 +1,10 @@
-defmodule Arand.Calendar do
+defmodule Burette.Calendar do
   @moduledoc """
   Generator for dates and times
   """
 
   @typep erl_date :: {Calendar.year, Calendar.month, Calendar.day}
   @typep erl_time :: {Calendar.hour, Calendar.minute, Calendar.second}
-
-  alias Arand.Number
 
   @spec date(Keyword.t) :: Date.t
   @doc """
@@ -81,7 +79,7 @@ defmodule Arand.Calendar do
       if 25 == retry_count do
         raise ArgumentError,
           message: """
-          parameters provided to Arand.Calendar.past/1 make it impossible to provide a correct date in the past
+          parameters provided to Burette.Calendar.past/1 make it impossible to provide a correct date in the past
 
           Last possible past date generated:
             #{inspect erl_datetime_to_elx_datetime(past)}
@@ -125,7 +123,7 @@ defmodule Arand.Calendar do
       if 25 == retry_count do
         raise ArgumentError,
           message: """
-          parameters provided to Arand.Calendar.future/1 make it impossible to provide a correct date in the future
+          parameters provided to Burette.Calendar.future/1 make it impossible to provide a correct date in the future
 
           Last possible future date generated:
             #{inspect erl_datetime_to_elx_datetime(future)}
@@ -206,7 +204,7 @@ defmodule Arand.Calendar do
 
   @spec maybe_random_number(Range.t | integer) :: integer
   defp maybe_random_number(m..n),
-    do: Number.number(m..n)
+    do: Burette.Number.number(m..n)
   defp maybe_random_number(v) when is_integer(v),
     do: v
 

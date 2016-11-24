@@ -1,14 +1,11 @@
-defmodule Arand.CalendarTest do
+defmodule Burette.CalendarTest do
 
   use ExUnit.Case, async: true
   use ExCheck
 
-  alias Arand.Calendar
-  alias Arand.Number
-
   describe "past" do
     test "generates datetimes in the past" do
-      dates = Enum.map(1..5_000, fn _ -> Calendar.past() end)
+      dates = Enum.map(1..5_000, fn _ -> Burette.Calendar.past() end)
       now = DateTime.utc_now() |> DateTime.to_unix()
 
       dates_set = MapSet.new(dates)
@@ -32,21 +29,21 @@ defmodule Arand.CalendarTest do
         # There is atleast 1 in 60 chances of colision. As we are runing 3_000
         # tests it is certain that collisions will happen. The test succedding
         # means by inference that, on collision, the generator module will retry
-        assert %DateTime{} = Calendar.past(opts)
+        assert %DateTime{} = Burette.Calendar.past(opts)
       end)
     end
 
     test "raise if params make it impossible to generate a date in the past" do
       assert_raise ArgumentError, fn ->
         # TODO: Fix this when the right time comes
-        Calendar.past(year: 2020)
+        Burette.Calendar.past(year: 2020)
       end
     end
   end
 
   describe "future" do
     test "generates datetimes in the future" do
-      dates = Enum.map(1..5_000, fn _ -> Calendar.future() end)
+      dates = Enum.map(1..5_000, fn _ -> Burette.Calendar.future() end)
       now = DateTime.utc_now() |> DateTime.to_unix()
 
       dates_set = MapSet.new(dates)
@@ -70,14 +67,14 @@ defmodule Arand.CalendarTest do
         # There is atleast 1 in 60 chances of colision. As we are runing 3_000
         # tests it is certain that collisions will happen. The test succedding
         # means by inference that, on collision, the generator module will retry
-        assert %DateTime{} = Calendar.future(opts)
+        assert %DateTime{} = Burette.Calendar.future(opts)
       end)
     end
 
     test "raise if params make it impossible to generate a date in the future" do
       assert_raise ArgumentError, fn ->
         # Welp, shall we build a time machine this code should work, right?
-        Calendar.future(year: 1990)
+        Burette.Calendar.future(year: 1990)
       end
     end
   end
@@ -91,9 +88,9 @@ defmodule Arand.CalendarTest do
       do
         date =
           [year: year, month: month, day: day]
-          |> Enum.sort_by(fn _ -> Number.number(1..10) end)
+          |> Enum.sort_by(fn _ -> Burette.Number.number(1..10) end)
           |> Enum.drop(drop)
-          |> Calendar.date()
+          |> Burette.Calendar.date()
 
         match?(%Date{}, date)
       end
@@ -101,12 +98,12 @@ defmodule Arand.CalendarTest do
 
     property "date - day fallbacks to last day of month" do
       for_all day in such_that(x in int when x >= 1 and x <= 31) do
-        match?(%Date{}, Calendar.date(day: day))
+        match?(%Date{}, Burette.Calendar.date(day: day))
       end
     end
 
     test "generates valid random dates" do
-      dates = Enum.map(1..5_000, fn _ -> Calendar.date() end)
+      dates = Enum.map(1..5_000, fn _ -> Burette.Calendar.date() end)
       dates_set = MapSet.new(dates)
 
       Enum.each(dates, &(assert %Date{} = &1))
@@ -123,16 +120,16 @@ defmodule Arand.CalendarTest do
       do
         time =
           [hour: hour, minute: minute, second: second]
-          |> Enum.sort_by(fn _ -> Number.number(1..10) end)
+          |> Enum.sort_by(fn _ -> Burette.Number.number(1..10) end)
           |> Enum.drop(drop)
-          |> Calendar.time()
+          |> Burette.Calendar.time()
 
         match?(%Time{}, time)
       end
     end
 
     test "generates valid random times" do
-      times = Enum.map(1..5_000, fn _ -> Calendar.time() end)
+      times = Enum.map(1..5_000, fn _ -> Burette.Calendar.time() end)
       times_set = MapSet.new(times)
 
       Enum.each(times, &(assert %Time{} = &1))
