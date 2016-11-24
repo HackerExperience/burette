@@ -14,13 +14,16 @@ defmodule Burette.Number do
     |> number()
     |> Integer.to_string()
   end
-  def digits(length) when length > 1 do
+  def digits(length) when length > 1 and length < 256 do
     min = trunc(:math.pow(10, length - 1))
     max = trunc(:math.pow(10, length)) - 1
 
     min..max
     |> number()
     |> Integer.to_string()
+  end
+  def digits(length) when length > 255 do
+    digits(255) <> digits(length - 255)
   end
 
   @lint {Credo.Check.Refactor.PipeChainStart, false}

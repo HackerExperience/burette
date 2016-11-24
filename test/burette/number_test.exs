@@ -1,44 +1,80 @@
 defmodule Burette.NumberTest do
 
   use ExUnit.Case, async: true
-  use ExCheck
+
+  defp generate(times, range_rules) do
+    for _ <- 1..times do
+      range_rules
+      |> List.wrap()
+      |> Enum.map(&Burette.Number.number/1)
+      |> case do
+        [el] ->
+          el
+        el = [_|_] ->
+          List.to_tuple(el)
+      end
+    end
+  end
 
   describe "digits/1" do
-    property "digits length" do
-      for_all length in such_that(x in int when x > 0) do
-        (length |> Burette.Number.digits() |> String.length()) === length
-      end
+    test "length" do
+      100
+      |> generate(1..32)
+      |> Enum.each(fn length ->
+        digits = Burette.Number.digits(length)
+
+        assert length === String.length(digits)
+      end)
     end
 
-    property "digits datatype" do
-      for_all length in such_that(x in int when x > 0) do
-        is_binary(Burette.Number.digits(length))
-      end
+    test "content" do
+      100
+      |> generate(1..100)
+      |> Enum.each(fn length ->
+        graphemes =
+          length
+          |> Burette.Number.digits()
+          |> String.graphemes()
+
+        assert Enum.all?(graphemes, &(&1 in ~w/0 1 2 3 4 5 6 7 8 9/))
+      end)
     end
 
-    property "digits content" do
-      for_all length in such_that(x in int when x > 0 and x < 50) do
-        length
-        |> Burette.Number.digits()
-        |> String.graphemes()
-        |> Enum.all?(&(&1 in ~w/0 1 2 3 4 5 6 7 8 9/))
-      end
+    test "very long digits works" do
+      length = 1048576
+
+      digits = Burette.Number.digits(length)
+
+      assert is_binary(digits)
+      assert length === String.length(digits)
     end
   end
 
   describe "number/1" do
     @tag iterations: 5_000
-    property "number range" do
-      for_all {x, y} in such_that({xx, yy} in {int, int} when xx < yy) do
-        val = Burette.Number.number(x..y)
-        x <= val and val <= y
-      end
+    test "generated numbers are inside range" do
+      5_000
+      |> generate([-10..0, 0..10])
+      |> Enum.each(fn {m, n} ->
+        val = Burette.Number.number(m..n)
+
+        assert val in m..n
+      end)
     end
 
-    property "number datatype" do
-      for_all {x, y} in such_that({xx, yy} in {int, int} when xx < yy) do
-        is_integer(Burette.Number.number(x..y))
-      end
+    test "generated numbers are integers" do
+      5_000
+      |> generate([-16777216..0, 0..16777216])
+      |> Enum.each(fn {m, n} ->
+        assert is_integer(Burette.Number.number(m..n))
+      end)
+    end
+
+    test "range values order doesn't match" do
+      val = Burette.Number.number(100..-100)
+
+      assert is_integer(val)
+      assert val in -100..100
     end
   end
 end

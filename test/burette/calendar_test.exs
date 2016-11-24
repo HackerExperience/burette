@@ -1,7 +1,20 @@
 defmodule Burette.CalendarTest do
 
   use ExUnit.Case, async: true
-  use ExCheck
+
+  defp generate(times, range_rules) do
+    for _ <- 1..times do
+      range_rules
+      |> List.wrap()
+      |> Enum.map(&Burette.Number.number/1)
+      |> case do
+        [el] ->
+          el
+        el = [_|_] ->
+          List.to_tuple(el)
+      end
+    end
+  end
 
   describe "past" do
     test "generates datetimes in the past" do
@@ -80,25 +93,29 @@ defmodule Burette.CalendarTest do
   end
 
   describe "date" do
-    property "date - generation" do
-      for_all \
-        {year, month, day, drop} in such_that(
-          {_, _, _, d} in {int(1900, 2100), int(1, 12), int(1, 28), int(3)}
-          when d >= 0 and d <= 3)
-      do
+    test "generates valid dates" do
+      5_000
+      |> generate([1900..2100, 1..12, 1..28, 0..3])
+      |> Enum.each(fn {year, month, day, drop} ->
         date =
           [year: year, month: month, day: day]
-          |> Enum.sort_by(fn _ -> Burette.Number.number(1..10) end)
+          |> Enum.shuffle()
           |> Enum.drop(drop)
           |> Burette.Calendar.date()
 
-        match?(%Date{}, date)
-      end
+        assert %Date{} = date
+      end)
     end
 
-    property "date - day fallbacks to last day of month" do
-      for_all day in such_that(x in int when x >= 1 and x <= 31) do
-        match?(%Date{}, Burette.Calendar.date(day: day))
+    test "date fallbacks to last day of month" do
+      date = Burette.Calendar.date(day: 31, month: 2)
+
+      assert %Date{} = date
+
+      if Calendar.ISO.leap_year?(date.year) do
+        assert 29 === date.day
+      else
+        assert 28 === date.day
       end
     end
 
@@ -112,20 +129,18 @@ defmodule Burette.CalendarTest do
   end
 
   describe "time" do
-    property "time - valid dates" do
-      for_all \
-        {hour, minute, second, drop} in such_that(
-          {_, _, _, d} in {int(0, 23), int(0, 59), int(0, 59), int(3)}
-          when d >= 0 and d <= 3)
-      do
+    test "generates valid times" do
+      5_000
+      |> generate([0..23, 0..59, 0..59, 0..3])
+      |> Enum.each(fn {hour, minute, second, drop} ->
         time =
           [hour: hour, minute: minute, second: second]
-          |> Enum.sort_by(fn _ -> Burette.Number.number(1..10) end)
+          |> Enum.shuffle()
           |> Enum.drop(drop)
           |> Burette.Calendar.time()
 
-        match?(%Time{}, time)
-      end
+        assert %Time{} = time
+      end)
     end
 
     test "generates valid random times" do

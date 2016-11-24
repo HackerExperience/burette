@@ -9,7 +9,6 @@ defmodule Burette.Mixfile do
       elixir: "~> 1.3",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      preferred_cli_env: [espec: :test],
       name: "Burette",
       description: "Library to efficiently generate random data for testing",
       package: package(),
@@ -23,11 +22,7 @@ defmodule Burette.Mixfile do
   defp deps do
     [
       {:earmark, "~> 1.0", only: :dev},
-      {:ex_doc, "~> 0.14", only: :dev},
-      {:credo, "~> 0.5", only: :dev},
-      {:dialyze, "~> 0.2", only: :dev},
-      {:excheck, "~> 0.5", only: :test},
-      {:triq, github: "triqng/triq", only: :test}]
+      {:ex_doc, "~> 0.14", only: :dev}]
   end
 
   defp package do
