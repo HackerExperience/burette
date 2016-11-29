@@ -1,17 +1,5 @@
 defmodule Burette.Helper.Lexicon do
 
-  defmodule Collection do
-    defstruct elements: []
-
-    def merge(c = %__MODULE__{elements: e}, lexicon),
-      do: %__MODULE__{c| elements: [lexicon| e]}
-    def merge(l1, l2),
-      do: %__MODULE__{elements: [l1, l2]}
-
-    def take(%__MODULE__{elements: e}),
-      do: Enum.random(e)
-  end
-
   defstruct [:lindex, :elements]
 
   def build(elements = [_|_]) do
@@ -30,16 +18,25 @@ defmodule Burette.Helper.Lexicon do
     Map.fetch!(e, Burette.Number.number(0..i))
   end
 
-  def take(c = %Collection{}) do
-    c
-    |> Collection.take()
-    |> take()
-  end
-
   def take(collection) do
     Enum.random(collection)
   end
 
-  def merge(lexicon1, lexicon2),
-    do: Collection.merge(lexicon1, lexicon2)
+  def merge(lexicon1, lexicon2) do
+    %__MODULE__{elements: e1, lindex: l1} = lexicon1
+    %__MODULE__{elements: e2, lindex: l2} = lexicon2
+
+    # The smaller set should be the "complement" so we traverse the minimum
+    # amount of elements
+    {base, complement, i} = l1 > l2 && {e1, e2, l1 + 1} || {e2, e1, l2 + 1}
+
+    new_lex =
+      complement
+      |> Enum.map(fn {k, v} -> {k + i, v} end)
+      |> Enum.into(base)
+
+    %__MODULE__{
+      lindex: map_size(new_lex) - 1,
+      elements: new_lex}
+  end
 end
