@@ -41,7 +41,7 @@ defmodule Burette.NumberTest do
     end
 
     test "very long digits works" do
-      length = 1048576
+      length = 65_536
 
       digits = Burette.Number.digits(length)
 

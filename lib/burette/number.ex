@@ -31,13 +31,8 @@ defmodule Burette.Number do
   @doc """
   Produces an integer between `m` and `n`
   """
-  def number(m..n) when m <= n do
-    ((n - m + 1) * :rand.uniform() + m)
-    |> Float.floor()
-    |> trunc()
-  end
-  def number(n..m),
-    do: number(m..n)
+  def number(m..n),
+    do: Enum.random(m..n)
 
   @spec number(integer, integer) :: integer
   @doc """

@@ -29,6 +29,6 @@ defmodule Burette.Mixfile do
     [
       files: ~w/mix.exs lib README.md/,
       maintainers: ["Charlotte Lorelei Oliveira"],
-      links: %{"Github" => "https://github.com/mememori/burette"}]
+      links: %{"Github" => "https://github.com/HackerExperience/burette"}]
   end
 end

@@ -95,7 +95,7 @@ defmodule Burette.CalendarTest do
   describe "date" do
     test "generates valid dates" do
       5_000
-      |> generate([1900..2100, 1..12, 1..28, 0..3])
+      |> generate([1..9000, 1..12, 1..28, 0..3])
       |> Enum.each(fn {year, month, day, drop} ->
         date =
           [year: year, month: month, day: day]
