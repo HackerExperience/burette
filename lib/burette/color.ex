@@ -8,8 +8,13 @@ defmodule Burette.Color do
   @callback name() :: String.t
   @callback lexicons() :: %{atom => Burette.Lexicon.t}
 
+  @doc """
+  Returns a color name
+  """
   defdelegate name,
     to: @provider
+
+  @doc false
   defdelegate lexicons,
     to: @provider
 

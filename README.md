@@ -2,15 +2,9 @@
 
 Burette is a library for generating fake data for tests.
 
-Burette's differential is that it is hand-tailored to provide good random data
-with maximum performance.
-
-Most other fake data generation libraries are suboptimized and will affect
-considerably the test suite run time.
-
-Burette high performance comes from using hand-tailored algorithms to produce
-the expected data and using maps as arrays to collect the "universe of
-possibilities"
+Burette's high performance comes from using hand-tailored algorithms to produce
+data and using tuples as arrays to collect the sample data, providing quick
+lookup
 
 ## Components
 - [x] Number (integer in range/digits)
@@ -55,10 +49,12 @@ iex> Burette.Calendar.time minute: 59, second: 59
 iex> Burette.Calendar.datetime
 %DateTime{...}
 iex> Burette.Calendar.datetime year: 1999, month: 12, hour: 23, minute: 59, second: 59
- %DateTime{...}
+%DateTime{...}
 iex> Burette.Calendar.future           
 %DateTime{...}
 iex> Burette.Calendar.future year: 2050
+%DateTime{...}
+iex> Burette.Calendar.past
 %DateTime{...}
 iex> Burette.Calendar.past month: 12, minute: 30
 %DateTime{...}
@@ -71,7 +67,6 @@ iex> Burette.Network.ipv4
 iex> Burette.Network.ipv6
 "BEDD:1F36:5B96:8B46:EEE1:8FAA:328E:FD0F"
 ```
-
 
 ### Burette.Color
 ```elixir
