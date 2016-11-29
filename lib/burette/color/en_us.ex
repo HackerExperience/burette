@@ -111,7 +111,7 @@ defmodule Burette.Color.En.Us do
     Lexicon.take(@names)
   end
 
-  def lexicon do
+  def lexicons do
     %{
       names: @names
     }

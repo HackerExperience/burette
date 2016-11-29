@@ -13,9 +13,10 @@ the expected data and using maps as arrays to collect the "universe of
 possibilities"
 
 ## Components
-- [x] Date (date/time/datetime/future/present)
 - [x] Number (integer in range/digits)
+- [x] Date (date/time/datetime/future/present)
 - [x] Network (ipv4/ipv6)
+- [x] Color (name/hex)
 - [ ] Internet (hostname/url/email/password)
 - [ ] Address (street address)
 - [ ] Name (first name/last name/full name)

@@ -39,4 +39,7 @@ defmodule Burette.Helper.Lexicon do
       lindex: map_size(new_lex) - 1,
       elements: new_lex}
   end
+
+  def values(%__MODULE__{elements: e}),
+    do: Map.values(e)
 end
