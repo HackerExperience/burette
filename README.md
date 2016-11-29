@@ -24,3 +24,59 @@ possibilities"
 - [ ] Corporation (corporation name)
 - [ ] Image (thumbnail/avatar)
 - [ ] Lorem (lorem ipsum)
+
+## Usage Examples
+### Burette.Number
+```elixir
+iex> Burette.Number.number 0..9 
+6
+iex> Burette.Number.number 0, 9
+0
+iex> Burette.Number.digits 3
+"944"
+```
+
+### Burette.Calendar
+```elixir
+iex> Burette.Calendar.date
+~D[1978-03-25]
+iex> Burette.Calendar.date day: 31
+~D[2022-01-31]
+iex> Burette.Calendar.date year: 1999
+~D[1999-06-22]
+iex> Burette.Calendar.date year: 1999, month: 12
+~D[1999-12-14]
+iex> Burette.Calendar.time
+~T[05:39:04]
+iex> Burette.Calendar.time hour: 21
+~T[21:50:08]
+iex> Burette.Calendar.time minute: 59, second: 59
+~T[08:59:59]
+iex> Burette.Calendar.datetime
+%DateTime{...}
+iex> Burette.Calendar.datetime year: 1999, month: 12, hour: 23, minute: 59, second: 59
+ %DateTime{...}
+iex> Burette.Calendar.future           
+%DateTime{...}
+iex> Burette.Calendar.future year: 2050
+%DateTime{...}
+iex> Burette.Calendar.past month: 12, minute: 30
+%DateTime{...}
+```
+
+### Burette.Network
+```elixir
+iex> Burette.Network.ipv4
+"74.177.174.187"
+iex> Burette.Network.ipv6
+"BEDD:1F36:5B96:8B46:EEE1:8FAA:328E:FD0F"
+```
+
+
+### Burette.Color
+```elixir
+iex> Burette.Color.name
+"Celadon"
+iex> Burette.Color.hex 
+"#D1BC5A"
+```
