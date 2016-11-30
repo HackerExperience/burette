@@ -12,7 +12,7 @@ lookup
 - [x] Network (ipv4/ipv6)
 - [x] Color (name/hex)
 - [x] Name (first name/last name/full name)
-- [ ] Internet (hostname/url/email/password)
+- [x] Internet (hostname/url/email/password)
 - [ ] Address (street address)
 - [ ] File (file name/file path)
 - [ ] Corporation (corporation name)
@@ -84,4 +84,26 @@ iex> Burette.Name.surname
 "Lewis"
 iex> Burette.Name.fullname
 "Roland Fowler Jr"
+```
+
+### Burette.Internet
+```elixir
+iex> Burette.Internet.username
+"smalllife1997"
+iex> Burette.Internet.email
+"openhardy1042@98noodles.foo"
+iex> Burette.Internet.domain
+"healthy_stanton_1995.as"
+iex> Burette.Internet.password
+"o1Os2VyI"
+iex> Burette.Internet.password alpha: 8
+"wWVVJgPj"
+iex> Burette.Internet.password alpha: 8, digit: 3 
+"9TobM3Xjt6k"
+iex> Burette.Internet.password alpha: 8, digit: 3, symbol: 4
+"w#F@qT)#HY404pE"
+iex> Burette.Internet.password alphanum: 10, symbol: 1                
+"3.DhUgmw2dJ"
+iex> Burette.Internet.password any: 4, symbol: 1, digit: 1, uppercase: 1, downcase: 1
+"]ZdE9~-2"
 ```
