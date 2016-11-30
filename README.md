@@ -11,9 +11,9 @@ lookup
 - [x] Date (date/time/datetime/future/present)
 - [x] Network (ipv4/ipv6)
 - [x] Color (name/hex)
+- [x] Name (first name/last name/full name)
 - [ ] Internet (hostname/url/email/password)
 - [ ] Address (street address)
-- [ ] Name (first name/last name/full name)
 - [ ] File (file name/file path)
 - [ ] Corporation (corporation name)
 - [ ] Image (thumbnail/avatar)
@@ -74,4 +74,14 @@ iex> Burette.Color.name
 "Celadon"
 iex> Burette.Color.hex 
 "#D1BC5A"
+```
+
+### Burette.Name
+```elixir
+iex> Burette.Name.name
+"Derek"
+iex> Burette.Name.surname
+"Lewis"
+iex> Burette.Name.fullname
+"Roland Fowler Jr"
 ```
