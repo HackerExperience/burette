@@ -7,8 +7,6 @@ defmodule Burette.Calendar do
   @typep erl_time :: {Calendar.hour, Calendar.minute, Calendar.second}
 
   @spec date(Keyword.t) :: Date.t
-  @doc """
-  """
   def date(params \\ []) do
     {year, month, day} = make_date_tuple(params)
 
