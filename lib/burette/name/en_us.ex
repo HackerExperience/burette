@@ -590,9 +590,9 @@ defmodule Burette.Name.En.Us do
   defp parse(str),
     do: parse(str, "")
   defp parse("{{name}}" <> rest, acc),
-    do: parse(rest, acc <> name)
+    do: parse(rest, acc <> name())
   defp parse("{{surname}}" <> rest, acc),
-    do: parse(rest, acc <> surname)
+    do: parse(rest, acc <> surname())
   defp parse(<<char::utf8, rest::binary>>, acc),
     do: parse(rest, acc <> <<char::utf8>>)
   defp parse("", acc),
