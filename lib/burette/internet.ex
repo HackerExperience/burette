@@ -9,13 +9,15 @@ defmodule Burette.Internet do
     {{company}}{{domain_suffix}}
     {{username}}{{domain_suffix}}
     {{color}}{{domain_suffix}}
-    {{thing}}{{domain_suffix}}/
+    {{thing}}{{domain_suffix}}
+  /
 
   @email_format Lexicon.build ~w/
     {{username}}@{{domain_name}}
     {{username}}{{digits}}@{{domain_name}}
     {{username}}{{year}}@{{domain_name}}
-    {{color}}_{{username}}@{{domain_name}}/
+    {{color}}_{{username}}@{{domain_name}}
+  /
 
   @company_format Lexicon.build ~w/
     {{thing}}{{thing}}
@@ -23,7 +25,8 @@ defmodule Burette.Internet do
     {{thing}}{{digits}}
     {{adjective}}{{thing}}
     {{digits}}{{thing}}
-    {{color}}{{thing}}/
+    {{color}}{{thing}}
+  /
 
   @names (
     Burette.Name.lexicons()
@@ -35,19 +38,102 @@ defmodule Burette.Internet do
     |> Lexicon.build())
 
   @username_formats Lexicon.build ~w/
-    {{name}}
+    {{name}}{{name}}_{{thing}}
+    {{name}}{{year}}
     {{name}}_{{year}}
     {{name}}{{digits}}
+    {{name}}_{{digits}}
     {{adjective}}{{thing}}{{year}}
+    {{adjective}}{{thing}}_{{year}}
     {{adjective}}{{name}}
+    {{adjective}}_{{name}}
     {{adjective}}{{name}}{{digits}}
-    {{adjective}}_{{name}}_{{year}}/
+    {{adjective}}_{{name}}_{{year}}
+  /
 
   # TODO: Move this to another module
-  @adjective Lexicon.build ~w/new cool amazing bizarre revolutionary incredible exotic outstanding big small clever cute easy fine funny healthy important light open wunderbar daft/
+  @adjective Lexicon.build ~w/
+    amazing
+    awesome
+    big
+    bizarre
+    bland
+    clever
+    cold
+    cool
+    cute
+    dirty
+    dry
+    easy
+    exotic
+    daft
+    filthy
+    fine
+    flat
+    fruity
+    funny
+    hard
+    healthy
+    hot
+    huge
+    loud
+    important
+    incredible
+    light
+    new
+    old
+    open
+    outstanding
+    petite
+    revolutionary
+    salty
+    silent
+    soft
+    sour
+    small
+    tasty
+    warm
+    wunderbar
+  /
 
   # TODO: Move this to another module
-  @thing Lexicon.build ~w/list map games computers systems pets codes gps keyboards pudding phone earth wind fire book directory punk keikaku noodles love life/
+  @thing Lexicon.build ~w/
+    apple
+    book
+    calendars
+    codes
+    computers
+    directory
+    earth
+    fire
+    games
+    globe
+    gps
+    guitar
+    ice
+    instruments
+    keikaku
+    keyboards
+    life
+    list
+    love
+    map
+    names
+    noodles
+    object
+    pets
+    piano
+    pie
+    pineapple
+    phone
+    pudding
+    punk
+    records
+    rock
+    systems
+    token
+    wind
+  /
 
   @password_downcase Lexicon.build(String.graphemes("abcdefghijklmnopqrstuvwxyz"))
   @password_uppercase Lexicon.build(String.graphemes("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
@@ -112,30 +198,36 @@ defmodule Burette.Internet do
 
   defp parse(string),
     do: parse(string, "")
-  defp parse("{{domain_name}}" <> rest, acc),
-    do: parse(rest, acc <> domain())
-  defp parse("{{domain_suffix}}" <> rest, acc),
-    do: parse(rest, acc <> Lexicon.take(@domain_suffix))
-  defp parse("{{username}}" <> rest, acc),
-    do: parse(rest, acc <> username())
-  defp parse("{{name}}" <> rest, acc),
-    do: parse(rest, acc <> Lexicon.take(@names))
-  defp parse("{{company}}" <> rest, acc),
-    do: parse(rest, acc <> company())
-  defp parse("{{color}}" <> rest, acc),
-    do: parse(rest, acc <> Lexicon.take(@colors))
-  defp parse("{{adjective}}" <> rest, acc),
-    do: parse(rest, acc <> Lexicon.take(@adjective))
-  defp parse("{{thing}}" <> rest, acc),
-    do: parse(rest, acc <> Lexicon.take(@thing))
-  defp parse("{{digits}}" <> rest, acc),
-    do: parse(rest, acc <> Number.digits(2))
-  defp parse("{{year}}" <> rest, acc),
-    do: parse(rest, acc <> to_string(Number.number(1970..2010)))
-  defp parse(<<char::utf8, rest::binary>>, acc),
-    do: parse(rest, acc <> <<char::utf8>>)
   defp parse("", acc),
     do: acc
+  defp parse(string, acc) do
+    {complement, rest} = case string do
+      "{{domain_name}}" <> rest ->
+        {domain(), rest}
+      "{{domain_suffix}}" <> rest ->
+        {Lexicon.take(@domain_suffix), rest}
+      "{{username}}" <> rest ->
+        {username(), rest}
+      "{{name}}" <> rest ->
+        {Lexicon.take(@names), rest}
+      "{{company}}" <> rest ->
+        {company(), rest}
+      "{{color}}" <> rest ->
+        {Lexicon.take(@colors), rest}
+      "{{adjective}}" <> rest ->
+        {Lexicon.take(@adjective), rest}
+      "{{thing}}" <> rest ->
+        {Lexicon.take(@thing), rest}
+      "{{digits}}" <> rest ->
+        {Number.digits(3), rest}
+      "{{year}}" <> rest ->
+        {to_string(Number.number(1950..2050)), rest}
+      <<char::utf8, rest::binary>> ->
+        {<<char::utf8>>, rest}
+    end
+
+    parse(rest, acc <> complement)
+  end
 
   defp company do
     @company_format
